@@ -13,7 +13,7 @@ ENTITY CTRL IS
         instruction : STD_LOGIC_VECTOR(7 DOWNTO 0);
         clk : IN STD_LOGIC; --时钟信号
         aluop : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-        memReset, memReadWrite, marin, whichAddr, pcClear, pcCount, memOut, Alin, Ahin, Ahout, clken, irin, txen, rxout : OUT STD_LOGIC --输出的指令信号
+        memReset, memReadWrite, marin, whichAddr, pcClear, pcCount, memOut, Alin, Ahin, Ahout, clken, irin, txen, rxout, led1, led2, led3, led4 : OUT STD_LOGIC --输出的指令信号
     );
 END ENTITY;
 
@@ -30,15 +30,13 @@ ARCHITECTURE A OF CTRL IS
 BEGIN
     U0 : clockPulse PORT MAP(clk, cpclr, T0, T1, T2, T3, T4, T5, T6, T7);
     PROCESS (clk, instruction)
-	         VARIABLE sendcnt : INTEGER := 0;
+        VARIABLE sendcnt : INTEGER := 0;
         VARIABLE pccleardone, pcstart : STD_LOGIC := '0';
     BEGIN
         -- SIGNAL clk, clkclear : STD_LOGIC := '0';
         -- SIGNAL Alout, memAddress, dout, dbus, pcAddr, alures, irout : STD_LOGIC_VECTOR(7 DOWNTO 0);
         -- SIGNAL memReset, memReadWrite, whichAddr, pcCount, Alin, Ahin, Ahout, irin : STD_LOGIC := '0';
         -- SIGNAL pcClear, memOut : STD_LOGIC := '1';
-
-
         IF rising_edge(clk) THEN
             IF (key1 = '0') THEN
                 state <= "00";
@@ -54,6 +52,12 @@ BEGIN
             END IF;
 
             IF (state = "00") THEN --receive code
+                --led
+                led1 <= '0';
+                led2 <= '1';
+                led3 <= '1';
+                led4 <= '1';
+                --
                 pcstart := '0';
                 pccleardone := '0';
                 sendcnt := 0;
@@ -92,6 +96,12 @@ BEGIN
                 END IF;
 
             ELSIF state = "01" THEN --send memory
+                --led
+                led1 <= '1';
+                led2 <= '0';
+                led3 <= '1';
+                led4 <= '1';
+                --
                 pcstart := '0';
                 pccleardone := '0';
                 -- PC
@@ -135,6 +145,12 @@ BEGIN
                 END IF;
 
             ELSIF state = "10" THEN --pc clear
+                --led
+                led1 <= '1';
+                led2 <= '1';
+                led3 <= '0';
+                led4 <= '1';
+                --
                 pcstart := '0';
                 sendcnt := 0;
                 -- PC
@@ -171,6 +187,12 @@ BEGIN
                 --txdone
                 --
             ELSE --run computer
+                --led
+                led1 <= '1';
+                led2 <= '1';
+                led3 <= '1';
+                led4 <= '0';
+                --
                 IF (pcstart = '0') THEN
                     pcstart := '1';
                     pccleardone := '0';

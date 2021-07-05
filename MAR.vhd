@@ -22,8 +22,9 @@ ARCHITECTURE rtl OF MAR IS
             Q : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
         );
     END COMPONENT;
-    SIGNAL d : STD_LOGIC_VECTOR(7 DOWNTO 0);
+    SIGNAL d, w : STD_LOGIC_VECTOR(7 DOWNTO 0);
 BEGIN
-    d <= (D0 AND (NOT which)) OR (D1 AND which);
+    w <= (OTHERS => (which));
+    d <= (D0 AND (NOT w)) OR (D1 AND w);
     U0 : Accumulator PORT MAP(clk, ia, d, Q);
 END ARCHITECTURE;

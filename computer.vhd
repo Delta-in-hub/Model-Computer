@@ -6,12 +6,12 @@ USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 ENTITY computer IS
     PORT (
-        clk50m, reset, rx, key1, key2, key3, key4 : IN STD_LOGIC; --板子时钟 50mhz
+        clk50m, rx, key1, key2, key3, key4 : IN STD_LOGIC; --板子时钟 50mhz
         seg : OUT STD_LOGIC_VECTOR(6 DOWNTO 0); --led针脚
         dig : OUT STD_LOGIC_VECTOR(4 DOWNTO 1); --led针脚
         led1, led2, led3, led4, tx : OUT STD_LOGIC
     );
-END top;
+END computer;
 
 ARCHITECTURE arch OF computer IS
     COMPONENT numtoled
@@ -29,7 +29,7 @@ ARCHITECTURE arch OF computer IS
             rxres : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
         );
     END COMPONENT;
-    COMPONENT rx232tx
+    COMPONENT rs232tx
         PORT (
             clk, txen : IN STD_LOGIC;
             i_TX_Byte : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -125,7 +125,7 @@ ARCHITECTURE arch OF computer IS
             instruction : STD_LOGIC_VECTOR(7 DOWNTO 0);
             clk : IN STD_LOGIC; --时钟信号
             aluop : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-            memReset, memReadWrite, marin, whichAddr, pcClear, pcCount, memOut, Alin, Ahin, Ahout, clken, irin, txen, rxout : OUT STD_LOGIC --输出的指令信号
+            memReset, memReadWrite, marin, whichAddr, pcClear, pcCount, memOut, Alin, Ahin, Ahout, clken, irin, txen, rxout, led1, led2, led3, led4 : OUT STD_LOGIC --输出的指令信号
         );
     END COMPONENT;
 
@@ -135,6 +135,7 @@ ARCHITECTURE arch OF computer IS
     SIGNAL pcClear, memOut : STD_LOGIC := '1';
     SIGNAL aluop : STD_LOGIC_VECTOR(2 DOWNTO 0);
     SIGNAL rxout, rxdone, txen, txdone : STD_LOGIC;
+    SIGNAL yournum : INTEGER RANGE 0 TO 1e4 := 0000;
 BEGIN
     U0 : RAM PORT MAP(memAddress, dout, dbus, '1', clk, memReset, memReadWrite);
     U1 : MAR PORT MAP(clk, marin, whichAddr, pcAddr, dbus, memAddress);
@@ -145,8 +146,9 @@ BEGIN
     U6 : dataRegsiter PORT MAP(clk, Ahin, Ahout, alures, dbus);
     U7 : clockSource PORT MAP(clk50m, clken, clk);
     U8 : Accumulator PORT MAP(clk, irin, dbus, irout); -- ir
-    U9 : CTRL PORT MAP(key1, key2, key3, key4, txdone, rxdone, irout, clk, aluop, memReset, memReadWrite, marin, whichAddr, pcClear, pcCount, memOut, Alin, Ahin, Ahout, clken, irin, txen, rxout);
+    U9 : CTRL PORT MAP(key1, key2, key3, key4, txdone, rxdone, irout, clk, aluop, memReset, memReadWrite, marin, whichAddr, pcClear, pcCount, memOut, Alin, Ahin, Ahout, clken, irin, txen, rxout, led1, led2, led3, led4);
     U10 : rs232rx PORT MAP(clk, rx, rxout, rxdone, dbus);
     U11 : rs232tx PORT MAP(clk, txen, dbus, tx, txdone);
-
+    U12 : numtoled PORT MAP(clk50m, yournum, seg, dig);
+    U13 : yournum <= to_integer(unsigned(dbus));
 END ARCHITECTURE;

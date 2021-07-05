@@ -21,7 +21,7 @@ ARCHITECTURE rtl OF rs232rx IS
     END COMPONENT;
     COMPONENT etrigate
         PORT (
-            en : IN STD_LOGIC; --avtive low
+            e : IN STD_LOGIC; --avtive high
             DIN : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
             DOUT : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
         );

@@ -2,15 +2,15 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 
-ENTITY rx232tx IS
+ENTITY rs232tx IS
     PORT (
         clk, txen : IN STD_LOGIC;
         i_TX_Byte : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
         tx, txdone : OUT STD_LOGIC
     );
-END rx232tx;
+END rs232tx;
 
-ARCHITECTURE rtl OF rx232tx IS
+ARCHITECTURE rtl OF rs232tx IS
 
     COMPONENT UART_TX
         GENERIC (

@@ -54,8 +54,8 @@ ARCHITECTURE rtl OF alu IS
 BEGIN
     U0 : paralleladder8 PORT MAP('0', A, B, '0', addres, c);
     U1 : subtract PORT MAP(A, B, subres);
-    U2 : shiftl PORT MAP(A, B, lres);
-    U3 : shiftr PORT MAP(A, B, rres);
+    U2 : shiftl PORT MAP(A,lres);
+    U3 : shiftr PORT MAP(A,rres);
     U4 : andres <= A AND B;
     U5 : orres <= A OR B;
     U6 : xorres <= A XOR B;

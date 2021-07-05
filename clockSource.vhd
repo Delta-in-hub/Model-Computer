@@ -21,9 +21,9 @@ BEGIN
     BEGIN
         IF cnt >= max THEN
             clko <= NOT clko;
-            cnt <= 0;
+            cnt := 0;
         ELSE
-            cnt <= cnt + 1;
+            cnt := cnt + 1;
         END IF;
     END PROCESS;
     clkout <= (en) AND clko;
