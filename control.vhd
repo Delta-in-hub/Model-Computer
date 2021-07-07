@@ -86,13 +86,15 @@ BEGIN
                 rxout <= '1';
                 --rxdone
                 --TX sender
-                txen <= '0';
+                --txen <= '0';
                 --txdone
                 --
                 IF (rxdone = '1') THEN
                     pcCount <= '1';
+                    txen <= '1';
                 ELSE
                     pcCount <= '0';
+                    txen <= '0';
                 END IF;
 
             ELSIF state = "01" THEN --send memory
@@ -132,7 +134,7 @@ BEGIN
                 -- txen <= '1';
                 --txdone
                 --
-                IF sendcnt <= 20 THEN
+                IF sendcnt <= 255 THEN
                     txen <= '1';
                     IF (txdone = '1') THEN
                         pcCount <= '1';
@@ -141,6 +143,7 @@ BEGIN
                         pcCount <= '0';
                     END IF;
                 ELSE
+                    pcCount <= '0';
                     txen <= '0';
                 END IF;
 
@@ -198,7 +201,7 @@ BEGIN
                     pccleardone := '0';
                     sendcnt := 0;
                     -- PC
-                    pcClear <= '0';
+                    pcClear <= '0'; 
                     pcCount <= '0';
                     -- Mar
                     marin <= '1';

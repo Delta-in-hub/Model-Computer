@@ -15,16 +15,16 @@ END clockSource;
 ARCHITECTURE rtl OF clockSource IS
     SIGNAL clko : STD_LOGIC;
 BEGIN
-    PROCESS (clk_50M)
-        VARIABLE cnt : INTEGER := 0;
-        VARIABLE max : INTEGER := 0; -- 5e7 / (1 + max)  hz
-    BEGIN
-        IF cnt >= max THEN
-            clko <= NOT clko;
-            cnt := 0;
-        ELSE
-            cnt := cnt + 1;
-        END IF;
-    END PROCESS;
-    clkout <= (en) AND clko;
+--    PROCESS (clk_50M)
+--        VARIABLE cnt : INTEGER := 0;
+--        VARIABLE max : INTEGER := 0; -- 5e7 / (1 + max)  hz
+--    BEGIN
+--        IF cnt >= max THEN
+--            clko <= NOT clko;
+--            cnt := 0;
+--        ELSE
+--            cnt := cnt + 1;
+--        END IF;
+--    END PROCESS;
+    clkout <= (en) AND clk_50M;
 END ARCHITECTURE;
