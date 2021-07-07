@@ -18,13 +18,13 @@
 #
 # Quartus Prime
 # Version 17.1.0 Build 590 10/25/2017 SJ Standard Edition
-# Date created = 20:20:38  June 27, 2021
+# Date created = 20:44:35  July 07, 2021
 #
 # -------------------------------------------------------------------------- #
 
 QUARTUS_VERSION = "17.1"
-DATE = "20:20:38  June 27, 2021"
+DATE = "20:44:35  July 07, 2021"
 
 # Revisions
 
-PROJECT_REVISION = "modelComputer"
+PROJECT_REVISION = "computer"

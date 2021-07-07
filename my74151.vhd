@@ -14,7 +14,7 @@ ARCHITECTURE rtl OF my74151 IS
 
 BEGIN
 
-    PROCESS (which)
+    PROCESS (which, A0, A1, A2, A3, A4, A5, A6, A7)
     BEGIN
         CASE(which) IS
             WHEN "000" =>

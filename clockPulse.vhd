@@ -13,39 +13,38 @@ ENTITY clockPulse IS
         T0, T1, T2, T3, T4, T5, T6, T7 : OUT STD_LOGIC --输出的T0-T7节拍信号
     );
 END clockPulse;
+ARCHITECTURE behave OF clockPulse IS
+    SIGNAL tout : STD_LOGIC_VECTOR(7 DOWNTO 0) := "00000001";
+BEGIN
+    T0 <= tout(0);
+    T1 <= tout(1);
+    T2 <= tout(2);
+    T3 <= tout(3);
+    T4 <= tout(4);
+    T5 <= tout(5);
+    T6 <= tout(6);
+    T7 <= tout(7);
 
-ARCHITECTURE A OF clockPulse IS
-    SIGNAL TEMP : STD_LOGIC_VECTOR(7 DOWNTO 0) := "00000001";
-BEGIN --T0-T7赋值
-    T0 <= TEMP(0);
-    T1 <= TEMP(1);
-    T2 <= TEMP(2);
-    T3 <= TEMP(3);
-    T4 <= TEMP(4);
-    T5 <= TEMP(5);
-    T6 <= TEMP(6);
-    T7 <= TEMP(7);
-
-    PROCESS (CLK, CLR)
+    PROCESS (clk, clr)
     BEGIN
-        IF (CLR = '1') THEN --CLR=1时复位,T0=1
-            TEMP(0) <= '1';
-            TEMP(1) <= '0';
-            TEMP(2) <= '0';
-            TEMP(3) <= '0';
-            TEMP(4) <= '0';
-            TEMP(5) <= '0';
-            TEMP(6) <= '0';
-            TEMP(7) <= '0';
-        ELSIF (CLK'EVENT AND CLK = '1') THEN --时钟信号上升沿到来时
-            TEMP(0) <= TEMP(7); --T0-T7信号循环右移
-            TEMP(1) <= TEMP(0);
-            TEMP(2) <= TEMP(1);
-            TEMP(3) <= TEMP(2);
-            TEMP(4) <= TEMP(3);
-            TEMP(5) <= TEMP(4);
-            TEMP(6) <= TEMP(5);
-            TEMP(7) <= TEMP(6);
+        IF (clr = '1') THEN
+            tout <= "00000001";
         END IF;
-    END PROCESS;
-END A;
+
+        IF rising_edge(clk) AND clr = '0' THEN
+            CASE tout IS
+                WHEN "00000001" => tout <= "00000010";
+                WHEN "00000010" => tout <= "00000100";
+                WHEN "00000100" => tout <= "00001000";
+                WHEN "00001000" => tout <= "00010000";
+                WHEN "00010000" => tout <= "00100000";
+                WHEN "00100000" => tout <= "01000000";
+                WHEN "01000000" => tout <= "10000000";
+                WHEN "10000000" => tout <= "00000001";
+                WHEN OTHERS => tout <= "00000001";
+            END CASE;
+        END IF;
+
+    END IF;
+END PROCESS;
+END behave;
