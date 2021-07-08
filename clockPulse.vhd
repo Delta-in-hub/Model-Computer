@@ -27,10 +27,6 @@ BEGIN
 
     PROCESS (clk, clr)
     BEGIN
-        IF (clr = '1') THEN
-            tout <= "00000001";
-        END IF;
-
         IF rising_edge(clk) AND clr = '0' THEN
             CASE tout IS
                 WHEN "00000001" => tout <= "00000010";
@@ -44,7 +40,9 @@ BEGIN
                 WHEN OTHERS => tout <= "00000001";
             END CASE;
         END IF;
+        IF clr = '1' THEN
+            tout <= "00000001";
+        END IF;
 
-    END IF;
-END PROCESS;
+    END PROCESS;
 END behave;

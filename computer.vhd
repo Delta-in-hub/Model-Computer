@@ -121,11 +121,18 @@ ARCHITECTURE arch OF computer IS
     END COMPONENT;
     COMPONENT CTRL
         PORT (
+            T0, T1, T2, T3, T4, T5, T6, T7 : IN STD_LOGIC;
             key1, key2, key3, key4, txdone, rxdone : IN STD_LOGIC;
             instruction : STD_LOGIC_VECTOR(7 DOWNTO 0);
             clk : IN STD_LOGIC; --时钟信号
             aluop : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-            memReset, memReadWrite, marin, whichAddr, pcClear, pcCount, memOut, Alin, Ahin, Ahout, clken, irin, txen, rxout, led1, led2, led3, led4 : OUT STD_LOGIC --输出的指令信号
+            memReset, memReadWrite, marin, whichAddr, pcClear, pcCount, memOut, Alin, Ahin, Ahout, clken, irin, txen, rxout, led1, led2, led3, led4, cpclr : OUT STD_LOGIC --输出的指令信号
+        );
+    END COMPONENT;
+    COMPONENT clockPulse
+        PORT (
+            CLK, CLR : IN STD_LOGIC; --输入的时钟信号和CLR复位信号 active high
+            T0, T1, T2, T3, T4, T5, T6, T7 : OUT STD_LOGIC --输出的T0-T7节拍信号
         );
     END COMPONENT;
 
@@ -137,6 +144,8 @@ ARCHITECTURE arch OF computer IS
     SIGNAL rxout, rxdone, txen, txdone : STD_LOGIC;
     SIGNAL yournum : INTEGER RANGE 0 TO 1e4 := 0000;
     SIGNAL rk, memReset2 : STD_LOGIC;
+    SIGNAL cpclr : STD_LOGIC := '0';
+    SIGNAL T0, T1, T2, T3, T4, T5, T6, T7 : STD_LOGIC; --输入的节拍信号
 BEGIN
     memReset2 <= memReset OR (NOT rk);
     U0 : RAM PORT MAP(memAddress, dout, dbus, '1', clk, memReset2, memReadWrite);
@@ -148,10 +157,11 @@ BEGIN
     U6 : dataRegsiter PORT MAP(clk, Ahin, Ahout, alures, dbus);
     U7 : clockSource PORT MAP(clk50m, clken, clk);
     U8 : Accumulator PORT MAP(clk, irin, dbus, irout); -- ir
-    U9 : CTRL PORT MAP(key1, key2, key3, key4, txdone, rxdone, irout, clk50m, aluop, memReset, memReadWrite, marin, whichAddr, pcClear, pcCount, memOut, Alin, Ahin, Ahout, clken, irin, txen, rxout, led1, led2, led3, led4);
+    U9 : CTRL PORT MAP(T0, T1, T2, T3, T4, T5, T6, T7, key1, key2, key3, key4, txdone, rxdone, irout, clk50m, aluop, memReset, memReadWrite, marin, whichAddr, pcClear, pcCount, memOut, Alin, Ahin, Ahout, clken, irin, txen, rxout, led1, led2, led3, led4, cpclr);
     U10 : rs232rx PORT MAP(clk50m, rx, rxout, rxdone, dbus);
     U11 : rs232tx PORT MAP(clk50m, txen, dbus, tx, txdone);
     U12 : numtoled PORT MAP(clk50m, yournum, seg, dig);
-    U13 : yournum <= to_integer(unsigned(Alout));
+    U13 : yournum <= to_integer(unsigned(irout));
     U14 : keyFitting PORT MAP(clk, resetkey, rk);
+    U15 : clockPulse PORT MAP(clk, cpclr, T0, T1, T2, T3, T4, T5, T6, T7);
 END ARCHITECTURE;
