@@ -137,7 +137,7 @@ ARCHITECTURE arch OF computer IS
     END COMPONENT;
 
     SIGNAL clk, clken : STD_LOGIC := '1';
-    SIGNAL Alout, memAddress, dout, dbus, pcAddr, alures, irout : STD_LOGIC_VECTOR(7 DOWNTO 0);
+    SIGNAL ahres, Alout, memAddress, dout, dbus, pcAddr, alures, irout : STD_LOGIC_VECTOR(7 DOWNTO 0);
     SIGNAL memReset, memReadWrite, whichAddr, pcCount, Alin, Ahin, Ahout, irin, marin : STD_LOGIC := '0';
     SIGNAL pcClear, memOut : STD_LOGIC := '0';
     SIGNAL aluop : STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -146,6 +146,7 @@ ARCHITECTURE arch OF computer IS
     SIGNAL rk, memReset2 : STD_LOGIC;
     SIGNAL cpclr : STD_LOGIC := '0';
     SIGNAL T0, T1, T2, T3, T4, T5, T6, T7 : STD_LOGIC; --输入的节拍信号
+    SIGNAL num : INTEGER RANGE 0 TO 1e4 := 0000;
 BEGIN
     memReset2 <= memReset OR (NOT rk);
     U0 : RAM PORT MAP(memAddress, dout, dbus, '1', clk, memReset2, memReadWrite);
@@ -154,14 +155,16 @@ BEGIN
     U3 : etrigate PORT MAP(memOut, dout, dbus);
     U4 : Accumulator PORT MAP(clk, Alin, dbus, Alout);
     U5 : alu PORT MAP(aluop, Alout, dbus, alures);
-    U6 : dataRegsiter PORT MAP(clk, Ahin, Ahout, alures, dbus);
+    U16 : Accumulator PORT MAP(clk, Ahin, alures, ahres);
+    U6 : dataRegsiter PORT MAP(clk, '1', Ahout, ahres, dbus);
     U7 : clockSource PORT MAP(clk50m, clken, clk);
     U8 : Accumulator PORT MAP(clk, irin, dbus, irout); -- ir
     U9 : CTRL PORT MAP(T0, T1, T2, T3, T4, T5, T6, T7, key1, key2, key3, key4, txdone, rxdone, irout, clk50m, aluop, memReset, memReadWrite, marin, whichAddr, pcClear, pcCount, memOut, Alin, Ahin, Ahout, clken, irin, txen, rxout, led1, led2, led3, led4, cpclr);
     U10 : rs232rx PORT MAP(clk50m, rx, rxout, rxdone, dbus);
     U11 : rs232tx PORT MAP(clk50m, txen, dbus, tx, txdone);
     U12 : numtoled PORT MAP(clk50m, yournum, seg, dig);
-    U13 : yournum <= to_integer(unsigned(irout));
+    num <= to_integer(unsigned(memAddress)) * 1000 + to_integer(unsigned(irout));
+    U13 : yournum <= num;
     U14 : keyFitting PORT MAP(clk, resetkey, rk);
     U15 : clockPulse PORT MAP(clk, cpclr, T0, T1, T2, T3, T4, T5, T6, T7);
 END ARCHITECTURE;

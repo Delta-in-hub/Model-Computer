@@ -39,7 +39,7 @@ ARCHITECTURE rtl OF testtop IS
     END COMPONENT;
 
     SIGNAL T0, T1, T2, T3, T4, T5, T6, T7 : STD_LOGIC := '1';
-    SIGNAL instruction : STD_LOGIC_VECTOR(7 DOWNTO 0) := "11111010";
+    SIGNAL instruction : STD_LOGIC_VECTOR(7 DOWNTO 0) := "11111000";
     SIGNAL key1, key2, key3, key4, cpclr1 : STD_LOGIC := '1';
     SIGNAL txdone, rxdone, pcClear1, pcCount1 : STD_LOGIC := '0';
 BEGIN
