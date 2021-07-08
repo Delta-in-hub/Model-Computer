@@ -229,16 +229,19 @@ BEGIN
                     CASE instruction IS
 
                         WHEN "11110000" => -- not
-                            IF T0 = '1' THEN
-                                --Control
-                                cpclr <= '0';
+                            IF t0 = '1' THEN
+                                irin <= '1';
+                                pcCount <= '0';
+                            ELSIF t1 = '1' THEN
                                 --IR register
                                 irin <= '0';
+                                -- PC
+                                pcCount <= '0';
+                                --Control
                                 -- Mar
                                 marin <= '1';
                                 whichAddr <= '0';
                                 -- RAM
-                                memReset <= '0';
                                 memReadWrite <= '0';
                                 memOut <= '1';
                                 -- ALU
@@ -250,17 +253,28 @@ BEGIN
                                 Ahout <= '0';
                                 -- ClkSource
                                 clken <= '1';
-                                -- PC
-                                pcClear <= '0';
-                                pcCount <= '0';
-                            ELSIF t1 = '1' THEN
-                                Ahin <= '0';
+                                --rebuild
                             ELSIF t2 = '1' THEN
+                                aluop <= "000";
+                                ahin <= '1';
+                                pcCount <= '0';
+                            ELSIF t3 = '1' THEN
+                                ahin <= '0';
+                                memOut <= '0';
+                                ahout <= '1';
+                            ELSIF t4 = '1' THEN
+                                alin <= '1';
+                                pcCount <= '0';
+                            ELSIF t5 = '1' THEN
+                                alin <= '0';
+                                memOut <= '1';
+                                ahout <= '0';
                                 pcCount <= '1';
-                            ELSE
-                                cpclr <= '1';
+                            ELSIF t6 = '1' THEN
+                                pcCount <= '0';
+                            ELSIF t7 = '1' THEN
                                 --IR register
-                                irin <= '1';
+                                irin <= '0';
                                 -- PC
                                 pcClear <= '0';
                                 pcCount <= '0';
@@ -269,7 +283,27 @@ BEGIN
                                 marin <= '1';
                                 whichAddr <= '0';
                                 -- RAM
-                                memReset <= '0';
+                                memReadWrite <= '0';
+                                memOut <= '1';
+                                -- ALU
+                                --AL register
+                                Alin <= '0';
+                                --AH register
+                                Ahin <= '0';
+                                Ahout <= '0';
+                                -- ClkSource
+                                clken <= '1';
+                            ELSE
+                                --IR register
+                                irin <= '0';
+                                -- PC
+                                pcClear <= '0';
+                                pcCount <= '0';
+                                --Control
+                                -- Mar
+                                marin <= '1';
+                                whichAddr <= '0';
+                                -- RAM
                                 memReadWrite <= '0';
                                 memOut <= '1';
                                 -- ALU
@@ -450,15 +484,19 @@ BEGIN
                                 clken <= '1';
                             END IF;
                         WHEN "11110100" => --shl
-                            IF T0 = '1' THEN
-                                --Control
-                                --IR register
+                            IF t0 = '1' THEN
                                 irin <= '1';
+                                pcCount <= '0';
+                            ELSIF t1 = '1' THEN
+                                --IR register
+                                irin <= '0';
+                                -- PC
+                                pcCount <= '0';
+                                --Control
                                 -- Mar
                                 marin <= '1';
                                 whichAddr <= '0';
                                 -- RAM
-                                memReset <= '0';
                                 memReadWrite <= '0';
                                 memOut <= '1';
                                 -- ALU
@@ -470,24 +508,25 @@ BEGIN
                                 Ahout <= '0';
                                 -- ClkSource
                                 clken <= '1';
-                                -- PC
-                                pcCount <= '0';
-                            ELSIF t1 = '1' THEN
-                                irin <= '0';
-                                pcCount <= '0';
-                                aluop <= "100";
-                                Ahin <= '1';
+                                --rebuild
                             ELSIF t2 = '1' THEN
+                                aluop <= "100";
+                                ahin <= '1';
                                 pcCount <= '0';
-                                Ahin <= '0';
                             ELSIF t3 = '1' THEN
-                                pcCount <= '1';
+                                ahin <= '0';
+                                memOut <= '0';
+                                ahout <= '1';
                             ELSIF t4 = '1' THEN
+                                alin <= '1';
                                 pcCount <= '0';
                             ELSIF t5 = '1' THEN
-                                NULL;
+                                alin <= '0';
+                                memOut <= '1';
+                                ahout <= '0';
+                                pcCount <= '1';
                             ELSIF t6 = '1' THEN
-                                NULL;
+                                pcCount <= '0';
                             ELSIF t7 = '1' THEN
                                 --IR register
                                 irin <= '0';
@@ -532,16 +571,19 @@ BEGIN
                                 clken <= '1';
                             END IF;
                         WHEN "11110101" => --shr
-                            IF T0 = '1' THEN
-                                --Control
-                                cpclr <= '0';
+                            IF t0 = '1' THEN
+                                irin <= '1';
+                                pcCount <= '0';
+                            ELSIF t1 = '1' THEN
                                 --IR register
                                 irin <= '0';
+                                -- PC
+                                pcCount <= '0';
+                                --Control
                                 -- Mar
                                 marin <= '1';
                                 whichAddr <= '0';
                                 -- RAM
-                                memReset <= '0';
                                 memReadWrite <= '0';
                                 memOut <= '1';
                                 -- ALU
@@ -553,17 +595,29 @@ BEGIN
                                 Ahout <= '0';
                                 -- ClkSource
                                 clken <= '1';
-                                -- PC
-                                pcClear <= '0';
-                                pcCount <= '0';
-                            ELSIF t1 = '1' THEN
-                                Ahin <= '0';
+                                --rebuild
                             ELSIF t2 = '1' THEN
+                                aluop <= "101";
+                                ahin <= '1';
+                                pcCount <= '0';
+                            ELSIF t3 = '1' THEN
+                                ahin <= '0';
+                                memOut <= '0';
+                                ahout <= '1';
+                                pcCount <= '0';
+                            ELSIF t4 = '1' THEN
+                                alin <= '1';
+                                pcCount <= '0';
+                            ELSIF t5 = '1' THEN
+                                alin <= '0';
+                                memOut <= '1';
+                                ahout <= '0';
                                 pcCount <= '1';
-                            ELSE
-                                cpclr <= '1';
+                            ELSIF t6 = '1' THEN
+                                pcCount <= '0';
+                            ELSIF t7 = '1' THEN
                                 --IR register
-                                irin <= '1';
+                                irin <= '0';
                                 -- PC
                                 pcClear <= '0';
                                 pcCount <= '0';
@@ -572,7 +626,27 @@ BEGIN
                                 marin <= '1';
                                 whichAddr <= '0';
                                 -- RAM
-                                memReset <= '0';
+                                memReadWrite <= '0';
+                                memOut <= '1';
+                                -- ALU
+                                --AL register
+                                Alin <= '0';
+                                --AH register
+                                Ahin <= '0';
+                                Ahout <= '0';
+                                -- ClkSource
+                                clken <= '1';
+                            ELSE
+                                --IR register
+                                irin <= '0';
+                                -- PC
+                                pcClear <= '0';
+                                pcCount <= '0';
+                                --Control
+                                -- Mar
+                                marin <= '1';
+                                whichAddr <= '0';
+                                -- RAM
                                 memReadWrite <= '0';
                                 memOut <= '1';
                                 -- ALU
@@ -585,16 +659,20 @@ BEGIN
                                 clken <= '1';
                             END IF;
                         WHEN "11110110" => --add
-                            IF T0 = '1' THEN
-                                --Control
-                                cpclr <= '0';
+                            IF t0 = '1' THEN
+                                Alin <= '0';
+                                irin <= '1';
+                                pcCount <= '0';
+                            ELSIF t1 = '1' THEN
                                 --IR register
                                 irin <= '0';
+                                -- PC
+                                pcCount <= '0';
+                                --Control
                                 -- Mar
                                 marin <= '1';
                                 whichAddr <= '0';
                                 -- RAM
-                                memReset <= '0';
                                 memReadWrite <= '0';
                                 memOut <= '1';
                                 -- ALU
@@ -606,20 +684,31 @@ BEGIN
                                 Ahout <= '0';
                                 -- ClkSource
                                 clken <= '1';
-                                -- PC
-                                pcClear <= '0';
-                                pcCount <= '0';
-                            ELSIF t1 = '1' THEN
-                                pcCount <= '1';
+                                --rebuild
                             ELSIF t2 = '1' THEN
-                                pcCount <= '0';
-                            ELSIF t3 = '1' THEN
-                                Ahin <= '0';
+                                aluop <= "110";
+                                ahin <= '1';
                                 pcCount <= '1';
-                            ELSE
-                                cpclr <= '1';
+                            ELSIF t3 = '1' THEN
+                                pcCount <= '0';
+                                aluop <= "110";
+                                ahin <= '1';
+                            ELSIF t4 = '1' THEN
+                                ahin <= '0';
+                                ahout <= '1';
+                                memOut <= '0';
+                                pcCount <= '0';
+                            ELSIF t5 = '1' THEN
+                                alin <= '1';
+                                pcCount <= '0';
+                            ELSIF t6 = '1' THEN
+                                alin <= '0';
+                                ahout <= '0';
+                                memout <= '1';
+                                pcCount <= '1';
+                            ELSIF t7 = '1' THEN
                                 --IR register
-                                irin <= '1';
+                                irin <= '0';
                                 -- PC
                                 pcClear <= '0';
                                 pcCount <= '0';
@@ -628,7 +717,27 @@ BEGIN
                                 marin <= '1';
                                 whichAddr <= '0';
                                 -- RAM
-                                memReset <= '0';
+                                memReadWrite <= '0';
+                                memOut <= '1';
+                                -- ALU
+                                --AL register
+                                Alin <= '0';
+                                --AH register
+                                Ahin <= '0';
+                                Ahout <= '0';
+                                -- ClkSource
+                                clken <= '1';
+                            ELSE
+                                --IR register
+                                irin <= '0';
+                                -- PC
+                                pcClear <= '0';
+                                pcCount <= '0';
+                                --Control
+                                -- Mar
+                                marin <= '1';
+                                whichAddr <= '0';
+                                -- RAM
                                 memReadWrite <= '0';
                                 memOut <= '1';
                                 -- ALU
