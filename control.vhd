@@ -249,29 +249,32 @@ BEGIN
                                 --AL register
                                 Alin <= '0';
                                 --AH register
-                                Ahin <= '1';
+                                Ahin <= '0';
                                 Ahout <= '0';
                                 -- ClkSource
                                 clken <= '1';
                                 --rebuild
                             ELSIF t2 = '1' THEN
+                                Alin <= '0';
                                 aluop <= "000";
                                 ahin <= '1';
                                 pcCount <= '0';
                             ELSIF t3 = '1' THEN
+                                Alin <= '0';
                                 ahin <= '0';
                                 memOut <= '0';
                                 ahout <= '1';
                             ELSIF t4 = '1' THEN
-                                alin <= '0'; --bug 操作两次
+                                ahin <= '0';
+                                alin <= '1'; --bug
                                 pcCount <= '0';
                             ELSIF t5 = '1' THEN
-                                alin <= '1';
+                                ahin <= '0';
+                                alin <= '0';
                                 memOut <= '1';
                                 ahout <= '0';
                                 pcCount <= '1';
                             ELSIF t6 = '1' THEN
-                                alin <='0';
                                 pcCount <= '0';
                             ELSIF t7 = '1' THEN
                                 --IR register
@@ -610,23 +613,27 @@ BEGIN
                                 --AL register
                                 Alin <= '0';
                                 --AH register
-                                Ahin <= '1';
+                                Ahin <= '0';
                                 Ahout <= '0';
                                 -- ClkSource
                                 clken <= '1';
                                 --rebuild
                             ELSIF t2 = '1' THEN
+                                Alin <= '0';
                                 aluop <= "100";
                                 ahin <= '1';
                                 pcCount <= '0';
                             ELSIF t3 = '1' THEN
+                                Alin <= '0';
                                 ahin <= '0';
                                 memOut <= '0';
                                 ahout <= '1';
                             ELSIF t4 = '1' THEN
-                                alin <= '1';
+                                ahin <= '0';
+                                alin <= '1'; --bug
                                 pcCount <= '0';
                             ELSIF t5 = '1' THEN
+                                ahin <= '0';
                                 alin <= '0';
                                 memOut <= '1';
                                 ahout <= '0';
@@ -697,23 +704,27 @@ BEGIN
                                 --AL register
                                 Alin <= '0';
                                 --AH register
-                                Ahin <= '1';
+                                Ahin <= '0';
                                 Ahout <= '0';
                                 -- ClkSource
                                 clken <= '1';
                                 --rebuild
                             ELSIF t2 = '1' THEN
+                                Alin <= '0';
                                 aluop <= "101";
                                 ahin <= '1';
                                 pcCount <= '0';
                             ELSIF t3 = '1' THEN
+                                Alin <= '0';
                                 ahin <= '0';
                                 memOut <= '0';
                                 ahout <= '1';
                             ELSIF t4 = '1' THEN
-                                alin <= '1';
+                                ahin <= '0';
+                                alin <= '1'; --bug
                                 pcCount <= '0';
                             ELSIF t5 = '1' THEN
+                                ahin <= '0';
                                 alin <= '0';
                                 memOut <= '1';
                                 ahout <= '0';
