@@ -481,7 +481,7 @@ BEGIN
                                 irin <= '0';
                                 -- PC
                                 pcClear <= '0';
-                                pcCount <= '1';
+                                pcCount <= '0';
                                 --Control
                                 -- Mar
                                 marin <= '1';
@@ -500,9 +500,16 @@ BEGIN
                                 -- ClkSource
                                 clken <= '1';
                             ELSIF t1 = '1' THEN
-                                cpclr <= '0';
+                                pcCount <= '1';
+                            ELSIF t2 = '1' THEN
+                                alin <= '0';
+                                pcCount <= '0';
+                            ELSIF t3 = '1' THEN
+                                pcCount <= '1';
+                            ELSE
+                                cpclr <= '1';
                                 --IR register
-                                irin <= '0';
+                                irin <= '1';
                                 -- PC
                                 pcClear <= '0';
                                 pcCount <= '0';
@@ -523,8 +530,6 @@ BEGIN
                                 Ahout <= '0';
                                 -- ClkSource
                                 clken <= '1';
-                            ELSE
-                                cpclr <= '1';
                             END IF;
                         WHEN "11111001" => --store
                             IF t0 = '1' THEN
