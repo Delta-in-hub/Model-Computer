@@ -163,7 +163,7 @@ BEGIN
     U10 : rs232rx PORT MAP(clk50m, rx, rxout, rxdone, dbus);
     U11 : rs232tx PORT MAP(clk50m, txen, dbus, tx, txdone);
     U12 : numtoled PORT MAP(clk50m, yournum, seg, dig);
-    num <= to_integer(unsigned(memAddress)) * 1000 + to_integer(unsigned(Alout));
+    num <= to_integer(unsigned(Alout));
     U13 : yournum <= num;
     U14 : keyFitting PORT MAP(clk, resetkey, rk);
     U15 : clockPulse PORT MAP(clk, cpclr, T0, T1, T2, T3, T4, T5, T6, T7);

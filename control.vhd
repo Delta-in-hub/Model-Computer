@@ -428,7 +428,7 @@ BEGIN
                                 memReadWrite <= '0';
                                 memOut <= '1';
                                 -- ALU
-                                aluop <= "110";
+                                aluop <= "010";
                                 --AL register
                                 Alin <= '0';
                                 --AH register
@@ -1127,7 +1127,7 @@ BEGIN
                                 -- ClkSource
                                 clken <= '1';
                             END IF;
-                        WHEN "11111010" => --load al  7
+                        WHEN "11111010" => --load al  7  Same to F8
                             IF t0 = '1' THEN
                                 irin <= '1';
                                 pcCount <= '0';
@@ -1225,31 +1225,6 @@ BEGIN
                             clken <= '0';
                             --IR register
                             irin <= '0';
-                            --Control
-                            cpclr <= '1';
-                            --RX receiver
-                            rxout <= '0';
-                            --rxdone
-                            --TX sender
-                            txen <= '0';
-                        WHEN "11111100" => --nop
-                            pcCount <= '1';
-                            -- Mar
-                            marin <= '1';
-                            whichAddr <= '0';
-                            -- RAM
-                            memReset <= '0';
-                            memReadWrite <= '0';
-                            memOut <= '1';
-                            --AL register
-                            Alin <= '0';
-                            --AH register
-                            Ahin <= '0';
-                            Ahout <= '0';
-                            -- ClkSource
-                            clken <= '1';
-                            --IR register
-                            irin <= '1';
                             --Control
                             cpclr <= '1';
                             --RX receiver
