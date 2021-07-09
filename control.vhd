@@ -1127,7 +1127,7 @@ BEGIN
                                 -- ClkSource
                                 clken <= '1';
                             END IF;
-                        WHEN "11111010" => --load al  7  Same to F8
+                        WHEN "11111010" => --   LOOP FROM 0
                             IF t0 = '1' THEN
                                 irin <= '1';
                                 pcCount <= '0';
@@ -1136,6 +1136,8 @@ BEGIN
                                 irin <= '0';
                                 -- PC
                                 pcCount <= '0';
+
+                                pcClear <= '0';
                                 --Control
                                 -- Mar
                                 marin <= '1';
@@ -1153,17 +1155,18 @@ BEGIN
                                 clken <= '1';
                                 --rebuild
                             ELSIF t2 = '1' THEN
-                                pcCount <= '1';
+                                pcClear <= '1';
                             ELSIF t3 = '1' THEN
-                                pcCount <= '0';
+                                pcClear <= '1';
                             ELSIF t4 = '1' THEN
-                                alin <= '1';
+                                pcClear <= '0';
                                 pcCount <= '0';
                             ELSIF t5 = '1' THEN
-                                alin <= '0';
-                                pcCount <= '1';
+                                pcCount <= '0';
+                                pcClear <= '0';
                             ELSIF t6 = '1' THEN
                                 pcCount <= '0';
+                                pcClear <= '0';
                             ELSIF t7 = '1' THEN
                                 --IR register
                                 irin <= '0';
