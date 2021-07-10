@@ -8,6 +8,8 @@
 
 RTL见`asserts/RTL.pdf` 
 
+结构框图![](asserts/structure.png)
+
 ## 显示
 
 数码管最高位显示地址的个位,其余三位显示累加器AL输出.
@@ -74,6 +76,36 @@ F8 02 F1 02 F9 00     //F1 后 F9 ,结果不会保存到RAM
 ```
 
 
+
+## 指令控制器
+
+| 端口         | 说明                  |
+| ------------ | --------------------- |
+| T0-T9        | 节拍输入              |
+| clk          | 时钟输入              |
+| instruction  | 指令输入              |
+| key1-key4    | 按键输入              |
+| rxdone       | 串口接受完成          |
+| txdone       | 串口发送完成          |
+| Ahin         | ALU结果寄存器输入控制 |
+| Ahout        | ALU结果寄存器输出控制 |
+| aluop        | ALU运算指令           |
+| clken        | 时钟源使能            |
+| cpclr        | 节拍器重置使能        |
+| irin         | 指令寄存器输入        |
+| led1-led4    | led灯                 |
+| marin        | 地址寄存器输入        |
+| memOut       | 三态门输出使能        |
+| memReadWrite | 内存读/写控制         |
+| memReset     | 内存清零              |
+| pcClear      | 程序计数器重置使能    |
+| pcCount      | 程序计数器计数使能    |
+| rxout        | 串口输入模块输入使能  |
+| txen         | 串口输出模块使能      |
+
+
+
+![](asserts/ctrl.png)
 
 
 
