@@ -1,8 +1,10 @@
 # 8位模型计算机
 
-数字逻辑与数字系统课设,基于EP4CE6E22C8的VHDL实现的8位模型计算机,支持12条指令,通过串口输入输出.
+数字逻辑与数字系统课设,基于EP4CE6E22C8的VHDL实现的8位模型计算机,支持12条指令,通过串口输入输出,可编程.
 
-使用 睿智FPGA EP4CE6E22C8 开发板 , 配置管脚图如下
+通过串口接收数据与指令,执行后,可将结果(即内存中内容)通过串口输出,因此我称之为可编程.
+
+使用 睿智FPGA EP4CE6E22C8 开发板 , 配置管脚图如下,其余管脚是为了Signal Tap,配置虚拟管脚即可.
 
 <img src="asserts/Snipaste_2021-07-10_15_40_11.jpg" style="zoom: 67%;" />
 
@@ -10,9 +12,11 @@ RTL见`asserts/RTL.pdf`
 
 结构框图![](asserts/structure.png)
 
-## 显示
+## 输入/输出
 
 数码管最高位显示地址的个位,其余三位显示累加器AL输出.
+
+通过串口输入输出,FPGA开发板的系统时钟为50MHZ,波特率设置为9600,数据位8,停止位1,检验位None,流程控制None.
 
 ##  指令
 
@@ -43,7 +47,9 @@ RTL见`asserts/RTL.pdf`
 | key4  | LED4亮,从当前地址开始执行指令.                               |
 | reset | RAM清零                                                      |
 
-通过串口传输指令,FPGA开发板的系统时钟为50MHZ,波特率设置为9600,数据位8,停止位1,检验位None,流程控制None
+
+
+## 指令示例 
 
 ```
 F0   not  
@@ -60,7 +66,7 @@ FA   LOOP FROM 0
 FB   halt
 Ohters halt
 
-实例:
+示例:
 
 F8 02 F5 F9 00 F6 04 F9 00 F7 03 F9 00
 LOAD 02;SHR;STORE;ADD 04;STORE;SUB 03;STORE
@@ -69,13 +75,11 @@ F8 E2 F3 18 F9 00 F4 F2 03 F9 00
 LOAD E2;XOR 18;STORE;SHL;OR 03;STORE
 
 F8 02 F4 F6 04 F9 00 FA
-LOAD 02;SHL;ADD 04;STORE;LOOP FROM START
+LOAD 02;SHL;ADD 04;STORE;LOOP FROM [0]
 
 BUG:
 F8 02 F1 02 F9 00     //F1 后 F9 ,结果不会保存到RAM
 ```
-
-
 
 ## 指令控制器
 
@@ -148,3 +152,4 @@ F8 02 F1 02 F9 00     //F1 后 F9 ,结果不会保存到RAM
 
 `sha512(sha512(学号)) = 39cc92bc96a46a7078077b2a1f94bf8126b139b3c67d2f8b6f58243adf0df5c420ba0c4512088156852413443a8f892d12d0ddb17a4567ae8f0317e63d1d631f`
 
+如果有帮助,请Star,谢谢.
