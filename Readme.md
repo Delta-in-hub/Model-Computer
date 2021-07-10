@@ -83,7 +83,7 @@ F8 02 F1 02 F9 00     //F1 后 F9 ,结果不会保存到RAM
 │  74283.vhd		加法器
 │  8trigate.vhd		8位三态门
 │  accumulator.vhd	累加器,实质上就是个寄存器
-│  alu.vhd			ALU
+│  alu.vhd		ALU
 │  clockPulse.vhd	节拍器,产生8个节拍
 │  clockSource.vhd	时钟源
 │  computer.vhd		顶层文件
@@ -92,8 +92,8 @@ F8 02 F1 02 F9 00     //F1 后 F9 ,结果不会保存到RAM
 │  D_flip_flop.vhd	D触发器
 │  hex_to_7_seg.vhd	数码管显示
 │  keyFitting.vhd	按键消抖
-│  led.vhd			数码管显示
-│  MAR.vhd			地址寄存器,为了既能从计数器也能总线,获得地址,但本模型机并没有用上
+│  led.vhd		数码管显示
+│  MAR.vhd		地址寄存器,为了既能从计数器也能总线,获得地址,但本模型机并没有用上
 │  memory.vhd		RAM内存
 │  my74151.vhd		数据选择器
 │  numtoled.vhd		数码管显示
