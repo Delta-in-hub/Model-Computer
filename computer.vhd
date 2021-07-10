@@ -9,6 +9,8 @@ ENTITY computer IS
         clk50m, rx, key1, key2, key3, key4, resetkey : IN STD_LOGIC; --板子时钟 50mhz
         seg : OUT STD_LOGIC_VECTOR(6 DOWNTO 0); --led针脚
         dig : OUT STD_LOGIC_VECTOR(4 DOWNTO 1); --led针脚
+		  res : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+		  dbusout :  OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
         led1, led2, led3, led4, tx : OUT STD_LOGIC
     );
 END computer;
@@ -163,8 +165,10 @@ BEGIN
     U10 : rs232rx PORT MAP(clk50m, rx, rxout, rxdone, dbus);
     U11 : rs232tx PORT MAP(clk50m, txen, dbus, tx, txdone);
     U12 : numtoled PORT MAP(clk50m, yournum, seg, dig);
-    num <= 1000 * (to_integer(unsigned(memAddress)) MOD 10) + to_integer(unsigned(Alout));
+    num <= 1000 * (to_integer(unsigned(pcAddr)MOD 10)) + to_integer(unsigned(Alout));
     U13 : yournum <= num;
     U14 : keyFitting PORT MAP(clk, resetkey, rk);
     U15 : clockPulse PORT MAP(clk, cpclr, T0, T1, T2, T3, T4, T5, T6, T7);
+	 res <= Alout;
+	 dbusout <= dbus;
 END ARCHITECTURE;
