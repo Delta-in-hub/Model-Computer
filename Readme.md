@@ -150,6 +150,4 @@ F8 02 F1 02 F9 00     //F1 后 F9 ,结果不会保存到RAM
 
 ## 其他
 
-` echo -n $学号 | sha512sum = 6403c4eb8da69dc44dff1e006b7bf3a9adf8e25bb9699b31414b16ebff45ef1df85593d239b4a74fdd47f9255264f6112e0f72d8d0125da773dfef17ef07de94`
-
 如果有帮助,请Star,谢谢.
